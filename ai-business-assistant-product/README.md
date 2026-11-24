@@ -16,9 +16,10 @@ A structured end-to-end case for an AI assistant that helps SME owners understan
 - AI behavior policy: evidence grounding, tenant isolation, permissions, prompt-injection handling and human escalation.
 - Requirements traceability matrix and prioritised MVP backlog.
 - OpenAPI contract for the assistant endpoint.
-- Runnable deterministic API prototype with synthetic tenant data and read-only invoice/revenue skills.
+- Runnable FastAPI prototype with synthetic tenant data and read-only invoice/revenue skills.
+- Optional OpenAI intent planner with structured output; deterministic planner remains the default.
 
-**Implementation boundary:** the prototype demonstrates API orchestration, skill routing, access boundaries and structured evidence. It does not call an LLM. LLM prompting, model selection, live evaluation and production integrations are specified as design work, not claimed as implemented.
+**Implementation boundary:** deterministic intent routing is the default for reproducible local runs and CI. An optional OpenAI Responses API planner is implemented to classify intent and extract explicitly stated ISO date ranges into a strict Pydantic schema. It has no tools and cannot read business data; the backend validates the plan and executes only allow-listed read-only skills. A live credentialed model run and model-accuracy score are not claimed. Production identity, accounting/banking integrations and external customer data are not connected.
 
 ## Project map
 
@@ -75,7 +76,7 @@ The demo data is synthetic. Tenant IDs are demo identifiers, not real organisati
 
 - Requirements and BA artifacts: authored for this independent case study.
 - API prototype: implemented with deterministic routing and synthetic data.
-- LLM provider integration: not implemented.
+- Optional OpenAI Responses API intent-planner integration: implemented in code; requires OPENAI_API_KEY and OPENAI_MODEL; live credentialed call not verified.
 - Model accuracy / hallucination metrics: evaluation design only; no live-model score is claimed.
 - Banking systems, real customer data, production identity provider and external accounting APIs: not connected.
 
