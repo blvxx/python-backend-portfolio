@@ -19,11 +19,11 @@ I build Python-based backend tools and integrations, with a focus on REST APIs, 
 
 ## Selected projects
 
-Project implementations are currently maintained in the original engineering repository. This repository is the dedicated Backend entry point; links below open source code, architecture and CI evidence.
+The source projects are included in this repository with their code, configuration, tests and engineering documentation. Cross-disciplinary QA/integration examples remain linked from the dedicated QA portfolio.
 
 ### 1. Telegram Business Assistant
 
-[Open source project](https://github.com/blvxx/portfolio/tree/main/telegram-business-assistant)
+[Open source project](./telegram-business-assistant)
 
 An asynchronous Telegram workflow built with Python and aiogram, PostgreSQL and Redis.
 
@@ -34,11 +34,11 @@ Engineering topics:
 - Transactional outbox pattern for reliable notification workflows.
 - Integration tests and operational checks.
 
-[Successful CI run](https://github.com/blvxx/portfolio/actions/runs/45102741553)
+[Successful CI run](https://github.com/blvxx/python-backend-portfolio/actions/workflows/telegram-business-assistant.yml)
 
 ### 2. AI Support Triage Agent
 
-[Open source project](https://github.com/blvxx/portfolio/tree/main/ai-support-triage-agent)
+[Open source project](./ai-support-triage-agent)
 
 A prototype for structured support triage with runbook retrieval and controlled AI assistance.
 
@@ -51,7 +51,7 @@ Engineering topics:
 
 ### 3. FinTech QA Platform — Backend and Integration
 
-[Open source project](https://github.com/blvxx/portfolio/tree/main/fintech-qa-platform)
+[Open source project](https://github.com/blvxx/qa-engineering-portfolio/tree/main/fintech-qa-platform)
 
 A fictional Payment/Ledger service environment using FastAPI, PostgreSQL and Docker Compose.
 
@@ -62,15 +62,15 @@ Engineering topics:
 - Database-backed integration checks.
 - Prometheus/Grafana observability and controlled dependency recovery.
 
-[Successful CI run](https://github.com/blvxx/portfolio/actions/runs/45100258032)
+[Successful CI run](https://github.com/blvxx/qa-engineering-portfolio/actions/workflows/fintech-qa-platform.yml)
 
 ### 4. Python API Automation
 
-[Open source project](https://github.com/blvxx/portfolio/tree/main/api-automation)
+[Open source project](https://github.com/blvxx/qa-engineering-portfolio/tree/main/api-automation)
 
 Reusable Python HTTP client and pytest suite covering REST methods, schemas, negative cases, pagination, timeouts and safe retry behavior.
 
-[Successful CI run — 62 tests](https://github.com/blvxx/portfolio/actions/runs/45102695248)
+[Successful CI run — 62 tests](https://github.com/blvxx/qa-engineering-portfolio/actions/workflows/api-automation.yml)
 
 ## Engineering approach
 
@@ -92,7 +92,7 @@ I focus on small systems that remove repetitive work and improve operational rel
 - API integrations that normalise data between services.
 - Excel/CSV order validation as a potential wholesale automation workflow.
 
-The commercial casebook describes problem statements, solution boundaries and validation metrics: [QA & Commercial Problem-Solving Casebook](https://github.com/blvxx/portfolio/blob/main/qa-commercial-casebook.md).
+The commercial casebook describes problem statements, solution boundaries and validation metrics: [QA & Commercial Problem-Solving Casebook](https://github.com/blvxx/qa-engineering-portfolio/blob/main/qa-commercial-casebook.md).
 
 These are independent projects and solution concepts. I do not present them as paid production deployments or claim customer revenue/savings without measured evidence.
 
@@ -102,7 +102,7 @@ Each source project contains its own dependencies and setup instructions. Start 
 
 ## Scope and transparency
 
-This repository is a curated Backend portfolio landing page. The source projects remain in the original repository for now and will be migrated here after the destination structure and full file history are checked. Some targets are prototypes or synthetic environments, not production customer systems.
+This repository contains the dedicated Backend project sources and documentation. FinTech QA Platform and API Automation are linked from the QA portfolio because those examples are presented there as quality-engineering case studies. Some targets are prototypes or synthetic environments, not production customer systems.
 
 ---
 
