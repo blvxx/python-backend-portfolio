@@ -56,7 +56,7 @@ Upstash's current Free Redis tier includes 250 MB of data, 500,000 commands per 
 
 1. Open [Koyeb](https://app.koyeb.com/) and choose **Create Web Service**.
 2. Choose **GitHub** as the source and authorise the Koyeb GitHub App for this repository only.
-3. Select `blvxx/portfolio`, branch `main`.
+3. Select `blvxx/python-backend-portfolio`, branch `main`.
 4. Set the work directory / root directory to `telegram-business-assistant`.
 5. Choose the **Dockerfile** builder and Dockerfile path `Dockerfile`.
 6. Choose a **Web Service**, not a separate Worker Service.
