@@ -24,6 +24,15 @@ curl -X POST http://127.0.0.1:8000/v1/assistant/query \
   -d '{"question":"Покажи неоплаченные счета","tenant_id":"demo-alpha"}'
 ~~~
 
+Paid revenue with a date range:
+
+~~~bash
+curl -X POST http://127.0.0.1:8000/v1/assistant/query \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer demo-alpha-token" \
+  -d '{"question":"Покажи выручку за ноябрь","tenant_id":"demo-alpha","period":{"from":"2026-11-01","to":"2026-11-30"}}'
+~~~
+
 ## Verification
 
 ~~~bash
