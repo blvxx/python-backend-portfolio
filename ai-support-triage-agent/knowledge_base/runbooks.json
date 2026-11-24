@@ -1,0 +1,78 @@
+[
+  {
+    "source_id": "KB-NGINX-502",
+    "title": "Nginx 502 Bad Gateway",
+    "product": "Nginx and upstream application service",
+    "keywords": ["nginx", "502", "bad gateway", "upstream", "connection refused", "gateway"],
+    "facts": [
+      "A 502 response means Nginx could not obtain a valid response from the configured upstream.",
+      "Possible causes include an unavailable upstream process, a wrong upstream address or port, or a local network/socket issue.",
+      "A 502 by itself does not prove that the database or application code is faulty."
+    ],
+    "read_only_checks": [
+      "Inspect recent Nginx error-log entries for the failing upstream address and port.",
+      "Read the upstream service status and recent journal logs without changing service state.",
+      "Compare the configured upstream host/port with the actual listener configuration."
+    ],
+    "escalation_notes": [
+      "Escalate when the upstream is unavailable across multiple checks or when recovery requires a service restart or deployment."
+    ]
+  },
+  {
+    "source_id": "KB-POSTGRES-POOL",
+    "title": "PostgreSQL connection pool saturation",
+    "product": "PostgreSQL-backed application",
+    "keywords": ["postgres", "postgresql", "database", "pool", "connection", "too many clients", "timeout"],
+    "facts": [
+      "Pool acquisition timeouts can occur when the application exhausts its configured connection pool.",
+      "Database-wide connection pressure and application pool saturation are related but distinct signals.",
+      "Increasing pool size without checking database connection limits and replica count can make saturation worse."
+    ],
+    "read_only_checks": [
+      "Inspect current and maximum PostgreSQL connection counts using read-only statistics views.",
+      "Review application pool-acquisition timeout metrics and pool in-use/idle gauges.",
+      "Compare replica count multiplied by maximum pool size with the configured database connection limit."
+    ],
+    "escalation_notes": [
+      "Escalate before changing pool limits, database settings or replica count."
+    ]
+  },
+  {
+    "source_id": "KB-DNS-TLS",
+    "title": "DNS resolution and TLS certificate validation",
+    "product": "HTTP service connectivity",
+    "keywords": ["dns", "resolve", "tls", "ssl", "certificate", "hostname", "handshake", "https"],
+    "facts": [
+      "A DNS failure prevents the client from resolving the service hostname to an address.",
+      "TLS validation can fail when a certificate is expired, not yet valid, untrusted or does not cover the requested hostname.",
+      "DNS resolution and certificate validation should be checked separately."
+    ],
+    "read_only_checks": [
+      "Inspect DNS A/AAAA and CNAME resolution from the affected runtime environment.",
+      "Inspect certificate subject, issuer, SAN hostnames and validity dates without sending credentials.",
+      "Compare the requested hostname with the certificate SAN list."
+    ],
+    "escalation_notes": [
+      "Escalate before changing DNS records, certificates, trust stores or network policy."
+    ]
+  },
+  {
+    "source_id": "KB-K8S-RESTARTS",
+    "title": "Kubernetes container restart investigation",
+    "product": "Kubernetes workload",
+    "keywords": ["kubernetes", "pod", "container", "restart", "crashloopbackoff", "oom", "exit code"],
+    "facts": [
+      "Repeated container restarts can be caused by process crashes, failed probes, resource limits or dependency failures.",
+      "An OOMKilled status indicates the container was terminated after exceeding its memory limit.",
+      "A restart count alone is insufficient to establish root cause; termination reason and previous-container logs are needed."
+    ],
+    "read_only_checks": [
+      "Inspect pod status, restart count, termination reason and last exit code.",
+      "Read previous-container logs and recent namespace events.",
+      "Compare observed memory usage with the configured container memory limit."
+    ],
+    "escalation_notes": [
+      "Escalate before editing a workload, changing resource limits or deleting/restarting a pod."
+    ]
+  }
+]

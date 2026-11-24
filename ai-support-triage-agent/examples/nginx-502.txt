@@ -1,0 +1,1 @@
+Synthetic incident: Nginx returns 502 Bad Gateway after a routine application release. The Nginx error log reports connect() failed (111: Connection refused) while connecting to upstream 10.0.4.12:8080. No credentials or customer data are included.

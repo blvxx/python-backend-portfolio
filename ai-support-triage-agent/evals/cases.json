@@ -1,0 +1,30 @@
+[
+  {
+    "case_id": "nginx-upstream-502",
+    "report": "Nginx started returning 502 Bad Gateway after a routine deploy. Error log shows connect() failed (111: Connection refused) while connecting to upstream 10.0.4.12:8080.",
+    "expected_severity": "high",
+    "expected_category": "availability",
+    "required_evidence": ["KB-NGINX-502"]
+  },
+  {
+    "case_id": "postgres-pool-timeout",
+    "report": "Several requests time out while acquiring a PostgreSQL connection. The service still responds intermittently and the database reports many active connections.",
+    "expected_severity": "high",
+    "expected_category": "database",
+    "required_evidence": ["KB-POSTGRES-POOL"]
+  },
+  {
+    "case_id": "dns-tls-validation",
+    "report": "An internal HTTPS client fails with a certificate hostname mismatch. DNS resolution returns the expected service address.",
+    "expected_severity": "medium",
+    "expected_category": "network",
+    "required_evidence": ["KB-DNS-TLS"]
+  },
+  {
+    "case_id": "kubernetes-restarts",
+    "report": "A Kubernetes pod has restarted repeatedly. The last termination reason is OOMKilled and memory usage is close to the configured container limit.",
+    "expected_severity": "high",
+    "expected_category": "availability",
+    "required_evidence": ["KB-K8S-RESTARTS"]
+  }
+]

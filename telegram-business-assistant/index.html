@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <meta name="description" content="A Python and aiogram Telegram business assistant for structured lead capture, consent, SQLite persistence and admin notifications.">
+  <title>Telegram Business Assistant — Engineering Case</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101923;--surface:#172330;--surface2:#1c2b39;--ink:#f1f5f8;--muted:#a7b5c2;--line:#2b3b49;--accent:#75e0c1;--max:1000px}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#1c3944 0,transparent 34%),var(--bg);color:var(--ink);font:15px/1.7 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+    a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+    header{border-bottom:1px solid var(--line)}.bar{height:68px;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{color:var(--ink);font-weight:850;letter-spacing:-.05em}.brand span{color:var(--accent)}
+    .back{font-size:13px;color:var(--muted)}main{padding:72px 0 54px}.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    h1{font-size:clamp(38px,7vw,70px);line-height:1.02;letter-spacing:-.06em;margin:20px 0}h1 span{color:var(--accent)}
+    .lead{max-width:760px;color:#c4d0da;font-size:18px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0 40px}
+    .button{display:inline-flex;padding:12px 16px;border-radius:9px;background:var(--accent);color:#10221f;font-weight:800;font-size:13px}.button.secondary{background:transparent;border:1px solid #496071;color:var(--ink)}
+    .status{display:inline-block;border:1px solid #796b45;background:#29291f;color:#f0d59b;border-radius:999px;padding:6px 10px;font-size:11px}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:32px}.card{border:1px solid var(--line);background:linear-gradient(145deg,#1a2a37,#15212c);padding:23px;border-radius:14px}.card h2{font-size:19px;margin:0 0 8px}.card p,.card li{color:var(--muted);font-size:13px}.card ul{padding-left:18px}
+    .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.step{border-top:2px solid #4b8e80;padding:12px 10px}.step b{display:block;color:var(--accent);font-size:11px}.step span{font-size:12px;color:#cbd9e3}
+    .note{border:1px solid var(--line);border-radius:12px;padding:18px;color:var(--muted);font-size:12px;margin-top:22px}footer{border-top:1px solid var(--line);padding:22px 0;color:#81909c;font-size:11px}
+    @media(max-width:700px){main{padding-top:52px}.grid{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<header><div class="wrap bar"><a class="brand" href="../engineering/">ARTEM<span>.</span> ENGINEERING</a><a class="back" href="../engineering/">← Engineering portfolio</a></div></header>
+<main class="wrap">
+  <p class="eyebrow">Python · Telegram Automation · Backend</p>
+  <h1>Telegram <span>Business Assistant</span></h1>
+  <p class="lead">A structured enquiry workflow for small businesses: visitors choose a service, share a contact, describe the task and receive confirmation. The application persists leads and can notify a responsible administrator.</p>
+  <div class="actions"><a class="button" href="https://github.com/blvxx/portfolio/tree/main/telegram-business-assistant">Inspect source code ↗</a><a class="button secondary" href="README.md">Read setup guide ↗</a></div>
+  <span class="status">Functional MVP · live Telegram deployment requires a private bot token</span>
+  <div class="grid">
+    <article class="card"><h2>Workflow and state</h2><p>aiogram router with explicit consent, service selection, contact capture, validation, cancellation and a confirmation path.</p></article>
+    <article class="card"><h2>Persistence and notifications</h2><p>SQLite stores each lead with a UTC timestamp. Optional admin chat notifications and a restricted /leads command complete the routing path.</p></article>
+    <article class="card"><h2>Validation and safety</h2><p>Phone/email checks, bounded request length, parameterized SQL, HTML escaping and environment-based secret management.</p></article>
+    <article class="card"><h2>Quality checks</h2><p>pytest covers the data layer and validation boundaries without requiring a Telegram token or network access. GitHub Actions runs the suite.</p></article>
+  </div>
+  <h2 style="margin-top:42px">Request lifecycle</h2>
+  <div class="flow">
+    <div class="step"><b>01</b><span>Consent</span></div><div class="step"><b>02</b><span>Service selection</span></div><div class="step"><b>03</b><span>Contact and details</span></div><div class="step"><b>04</b><span>SQLite + admin alert</span></div>
+  </div>
+  <div class="note"><strong>Scope:</strong> this repository contains a runnable MVP. It is not yet connected to a live public bot, CRM, payment provider or external AI model. For a real deployment, configure a bot token and administrator IDs as environment secrets, confirm the business privacy notice and choose persistent hosting.</div>
+</main>
+<footer><div class="wrap">Independent engineering project · Synthetic demo data · © 2026 Artem Kalinin</div></footer>
+</body>
+</html>
