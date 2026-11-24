@@ -69,8 +69,8 @@ The demo data is synthetic. Tenant IDs are demo identifiers, not real organisati
 
 ## Latest verification
 
-- [AI Business Assistant Prototype CI — successful run on 24 November 2026](https://github.com/blvxx/python-backend-portfolio/actions/runs/45416891475)
-- The workflow compiles the FastAPI application and runs the API test suite, including tenant isolation, unsupported writes, explicit revenue date filtering, invalid/unverified periods and deterministic/LLM intent-planner contracts. The suite passed 15 tests.
+- [AI Business Assistant Prototype CI — successful run on 24 November 2026](https://github.com/blvxx/python-backend-portfolio/actions/runs/45417031027)
+- The workflow compiles the FastAPI application and runs the API test suite, including tenant isolation, unsupported writes, explicit revenue date filtering, invalid/unverified periods and deterministic/LLM intent-planner contracts. The suite passed 16 tests.
 
 ## Evidence and limitations
 
