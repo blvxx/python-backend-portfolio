@@ -1,5 +1,7 @@
 # SME AI Business Assistant — Business Analysis Case Study
 
+[![AI Business Assistant CI](https://github.com/blvxx/python-backend-portfolio/actions/workflows/ai-business-assistant.yml/badge.svg)](https://github.com/blvxx/python-backend-portfolio/actions/workflows/ai-business-assistant.yml)
+
 > Independent portfolio case study. The business, stakeholders, requirements, data and examples are fictional/synthetic. This is not a bank implementation or paid client delivery.
 
 **Role focus:** AI Business Analyst · IT Business Analyst · AI Product Analyst · LLM Product Analyst
