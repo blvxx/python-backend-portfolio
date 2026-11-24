@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app import app
+from planner import IntentPlan
 
 client = TestClient(app)
 
@@ -59,6 +60,28 @@ def test_reversed_revenue_period_is_rejected():
         headers={"Authorization": "Bearer demo-alpha-token"},
     )
     assert response.status_code == 422
+
+
+def test_unverified_llm_dates_are_not_used(monkeypatch):
+    class HallucinatingPlanner:
+        async def plan(self, *, question, period_supplied):
+            return IntentPlan(
+                intent="paid_revenue",
+                date_from="2026-11-01",
+                date_to="2026-11-30",
+                requires_clarification=False,
+                clarification_question=None,
+                reason="Synthetic planner output for a negative test.",
+            )
+
+    monkeypatch.setattr("app.get_planner", lambda: HallucinatingPlanner())
+    response = client.post(
+        "/v1/assistant/query",
+        json=payload("Покажи выручку"),
+        headers={"Authorization": "Bearer demo-alpha-token"},
+    )
+    assert response.status_code == 200
+    assert response.json()["status"] == "clarification_required"
 
 def test_write_request_is_refused():
     response = client.post("/v1/assistant/query", json=payload("Отметь счёт оплаченным"), headers={"Authorization": "Bearer demo-alpha-token"})
