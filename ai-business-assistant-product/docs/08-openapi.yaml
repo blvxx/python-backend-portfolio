@@ -1,0 +1,76 @@
+openapi: 3.1.0
+info:
+  title: SME AI Business Assistant API
+  version: 0.1.0
+  description: >
+    Portfolio contract for a read-only SME assistant. Tenant identity must be
+    resolved by a trusted authentication layer in production. Demo implementation
+    uses synthetic data and must not be exposed as a production service.
+servers:
+  - url: http://127.0.0.1:8000
+paths:
+  /v1/assistant/query:
+    post:
+      summary: Ask a question against approved read-only business skills
+      operationId: submitAssistantQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssistantQuery'
+      responses:
+        '200':
+          description: Structured answer or safe fallback
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssistantAnswer'
+        '403':
+          description: Tenant context is invalid or access is denied
+        '422':
+          description: Request validation failed
+components:
+  schemas:
+    AssistantQuery:
+      type: object
+      required: [question, tenant_id]
+      properties:
+        question:
+          type: string
+          minLength: 3
+          maxLength: 1000
+        tenant_id:
+          type: string
+          description: Synthetic demo tenant only; production tenant comes from trusted auth context.
+        period:
+          type: object
+          properties:
+            from: { type: string, format: date }
+            to: { type: string, format: date }
+    Evidence:
+      type: object
+      required: [source, record_ids, as_of]
+      properties:
+        source: { type: string }
+        record_ids:
+          type: array
+          items: { type: string }
+        as_of: { type: string, format: date-time }
+    AssistantAnswer:
+      type: object
+      required: [intent, answer, evidence, status, read_only]
+      properties:
+        intent: { type: string }
+        answer: { type: string }
+        status:
+          type: string
+          enum: [answered, clarification_required, unsupported]
+        read_only: { type: boolean, const: true }
+        evidence:
+          type: array
+          items:
+            $ref: '#/components/schemas/Evidence'
+        warnings:
+          type: array
+          items: { type: string }
