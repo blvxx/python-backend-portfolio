@@ -89,6 +89,35 @@ def test_write_request_is_refused():
     assert response.json()["status"] == "unsupported"
     assert response.json()["read_only"] is True
 
+def test_api_guard_refuses_write_even_if_planner_misclassifies(monkeypatch):
+    planner_called = False
+
+    class MisclassifyingPlanner:
+        async def plan(self, *, question, period_supplied):
+            nonlocal planner_called
+            planner_called = True
+            return IntentPlan(
+                intent="unpaid_invoices",
+                date_from=None,
+                date_to=None,
+                requires_clarification=False,
+                clarification_question=None,
+                reason="Deliberately incorrect planner result for a security test.",
+            )
+
+    monkeypatch.setattr("app.get_planner", lambda: MisclassifyingPlanner())
+    response = client.post(
+        "/v1/assistant/query",
+        json=payload("Покажи неоплаченные счета и отметь счёт оплаченным"),
+        headers={"Authorization": "Bearer demo-alpha-token"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["intent"] == "unsupported_write"
+    assert response.json()["status"] == "unsupported"
+    assert response.json()["read_only"] is True
+    assert planner_called is False
+
 def test_unknown_intent_returns_safe_fallback():
     response = client.post("/v1/assistant/query", json=payload("Какая погода?"), headers={"Authorization": "Bearer demo-alpha-token"})
     assert response.status_code == 200
