@@ -1,8 +1,8 @@
 # Runnable deterministic API prototype
 
-This prototype demonstrates the request/response boundary, simple skill routing, synthetic business data, tenant scoping, evidence metadata and safe fallbacks.
+This prototype demonstrates the request/response boundary, intent planning, synthetic business data, tenant scoping, evidence metadata and safe fallbacks.
 
-It does **not** connect to an LLM or external accounting/banking system. The intent router is deterministic so that authorization and business behavior can be reproduced without model variability or API spend.
+By default it uses a deterministic planner so CI and local tests run without an API key. An optional OpenAI Responses API planner can classify intent and extract explicit date ranges into a strict schema. The LLM planner has no tools and cannot read business data; the backend verifies the plan and executes only allow-listed read-only skills. No external accounting/banking system is connected.
 
 ## Setup
 
