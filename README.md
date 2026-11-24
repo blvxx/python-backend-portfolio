@@ -25,7 +25,7 @@ I build Python-based backend tools and integrations, with a focus on REST APIs, 
 
 End-to-end product analysis for a fictional SME assistant: business context, BRD/FRD, user stories, acceptance criteria, AS-IS/TO-BE, dialogue scenarios, AI guardrails, requirements traceability, evaluation plan and prioritised backlog. Includes a deterministic FastAPI prototype with synthetic tenant-scoped invoice data.
 
-The prototype demonstrates routing and access boundaries; it does not call an LLM. Model evaluation and production banking integrations are documented as future work, not claimed as completed.
+The prototype uses deterministic intent routing by default and also includes an optional OpenAI Responses API intent planner. The model only classifies intent and extracts explicitly stated dates; it has no tools and cannot access business records. The backend independently blocks write requests and executes only allow-listed read-only skills. The integration is implemented in code, but a live credentialed model call and model-accuracy evaluation are not claimed as completed.
 
 ## Selected projects
 
