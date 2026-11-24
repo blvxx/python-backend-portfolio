@@ -39,6 +39,6 @@ curl -X POST http://127.0.0.1:8000/v1/assistant/query \
 pytest -q
 ~~~
 
-Tests cover supported intents, unknown intent, missing tenant context, mismatched tenant context and evidence metadata.
+Tests cover tenant isolation, unsupported writes, revenue date filtering, invalid/unverified periods, deterministic intent routing and the optional OpenAI planner's structured output contract. The current CI run passes 15 tests. Live model calls are not run in CI.
 
 The demo tokens are public fixture values intentionally stored in source code. They only demonstrate server-side token-to-tenant mapping for local tests and provide no real security. Production authentication must validate credentials through a trusted identity provider and derive tenant and actor from verified claims.
