@@ -4,8 +4,11 @@ from app import app
 
 client = TestClient(app)
 
-def payload(question="Покажи неоплаченные счета", tenant="demo-alpha"):
-    return {"question": question, "tenant_id": tenant}
+def payload(question="Покажи неоплаченные счета", tenant="demo-alpha", period=None):
+    result = {"question": question, "tenant_id": tenant}
+    if period is not None:
+        result["period"] = period
+    return result
 
 def test_unpaid_invoices_returns_tenant_scoped_evidence():
     response = client.post("/v1/assistant/query", json=payload(), headers={"Authorization": "Bearer demo-alpha-token"})
@@ -48,6 +51,14 @@ def test_invalid_demo_token_is_denied():
         headers={"Authorization": "Bearer unknown-token"},
     )
     assert response.status_code == 403
+
+def test_reversed_revenue_period_is_rejected():
+    response = client.post(
+        "/v1/assistant/query",
+        json=payload("Покажи выручку", period={"from": "2026-11-30", "to": "2026-11-01"}),
+        headers={"Authorization": "Bearer demo-alpha-token"},
+    )
+    assert response.status_code == 422
 
 def test_write_request_is_refused():
     response = client.post("/v1/assistant/query", json=payload("Отметь счёт оплаченным"), headers={"Authorization": "Bearer demo-alpha-token"})
