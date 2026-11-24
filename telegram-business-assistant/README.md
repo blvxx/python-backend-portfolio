@@ -98,8 +98,8 @@ The repository includes a Dockerfile and Docker Compose configuration with Postg
 1. Install Docker Engine and the Docker Compose V2 plugin on a Linux server.
 2. Clone the repository and enter the project directory:
 
-       git clone https://github.com/blvxx/portfolio.git
-       cd portfolio/telegram-business-assistant
+       git clone https://github.com/blvxx/python-backend-portfolio.git
+       cd python-backend-portfolio/telegram-business-assistant
 
 3. Create the private environment file and restrict its permissions:
 
@@ -145,7 +145,7 @@ Tests cover lead persistence, application policy, handler/FSM orchestration, out
 
 The reviewed **23 November 2026** GitHub Actions run completed successfully. It passed Python linting, unit and PostgreSQL/Redis service-integration tests, a disposable PostgreSQL backup/restore verification, Prometheus scrape/alert validation and Docker image build.
 
-[Open the successful workflow run](https://github.com/blvxx/portfolio/actions/runs/45102741553).
+[Open the successful workflow run](https://github.com/blvxx/python-backend-portfolio/actions/workflows/telegram-business-assistant.yml).
 
 ## Configuration
 
