@@ -1,14 +1,22 @@
+import os
 from datetime import date, datetime, timezone
 from decimal import Decimal
+from functools import lru_cache
 from typing import Literal
 
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, Field
 
+from planner import (
+    DeterministicIntentPlanner,
+    OpenAIIntentPlanner,
+    PlannerError,
+)
+
 app = FastAPI(
     title="SME AI Business Assistant — deterministic demo",
     version="0.1.0",
-    description="Read-only synthetic demo. No LLM or production integrations.",
+    description="Read-only synthetic demo with deterministic or optional LLM intent planning. No production integrations.",
 )
 
 AS_OF = datetime(2026, 11, 24, 12, 0, tzinfo=timezone.utc)
@@ -48,12 +56,31 @@ class AssistantAnswer(BaseModel):
     evidence: list[Evidence] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
 
+@lru_cache(maxsize=1)
+def get_planner():
+    mode = os.getenv("ASSISTANT_PLANNER_MODE", "deterministic").strip().casefold()
+    if mode == "deterministic":
+        return DeterministicIntentPlanner()
+    if mode == "openai":
+        api_key = os.getenv("OPENAI_API_KEY")
+        model = os.getenv("OPENAI_MODEL")
+        if not api_key or not model:
+            raise RuntimeError(
+                "OPENAI_API_KEY and OPENAI_MODEL are required when ASSISTANT_PLANNER_MODE=openai"
+            )
+        return OpenAIIntentPlanner(api_key=api_key, model=model)
+    raise RuntimeError("ASSISTANT_PLANNER_MODE must be 'deterministic' or 'openai'")
+
 @app.get("/health")
 def health():
-    return {"status": "ok", "mode": "deterministic-demo"}
+    try:
+        get_planner()
+    except RuntimeError:
+        return {"status": "degraded", "mode": os.getenv("ASSISTANT_PLANNER_MODE", "deterministic")}
+    return {"status": "ok", "mode": os.getenv("ASSISTANT_PLANNER_MODE", "deterministic")}
 
 @app.post("/v1/assistant/query", response_model=AssistantAnswer)
-def query_assistant(
+async def query_assistant(
     request: AssistantQuery,
     authorization: str | None = Header(default=None),
 ):
@@ -67,10 +94,17 @@ def query_assistant(
     if authenticated_tenant != request.tenant_id:
         raise HTTPException(status_code=403, detail="Tenant context mismatch")
 
-    text = request.question.casefold()
+    try:
+        plan = await get_planner().plan(
+            question=request.question,
+            period_supplied=request.period is not None,
+        )
+    except (PlannerError, RuntimeError) as exc:
+        raise HTTPException(status_code=503, detail="Intent planner is unavailable") from exc
+
     records = INVOICES[request.tenant_id]
 
-    if any(term in text for term in ("оплати", "переведи", "отметь", "измени статус", "закрой счёт")):
+    if plan.intent == "unsupported_write":
         return AssistantAnswer(
             intent="unsupported_write",
             answer="Эта версия работает только в режиме чтения и не выполняет платежи или изменения счетов.",
@@ -78,7 +112,7 @@ def query_assistant(
             warnings=["Write operations are disabled in the MVP."],
         )
 
-    if any(term in text for term in ("неоплачен", "должны оплатить", "дебитор")):
+    if plan.intent == "unpaid_invoices":
         rows = [row for row in records if row["status"] == "unpaid"]
         if not rows:
             answer = "Неоплаченных счетов в демонстрационных данных не найдено."
@@ -96,20 +130,30 @@ def query_assistant(
             warnings=["Синтетические демонстрационные данные; не использовать для финансовых решений."],
         )
 
-    if any(term in text for term in ("выруч", "оплачен", "поступлен", "заработ")):
-        if request.period is None:
+    if plan.intent == "paid_revenue":
+        period = request.period
+        if period is None and plan.date_from and plan.date_to:
+            try:
+                period = QueryPeriod(
+                    start=date.fromisoformat(plan.date_from),
+                    end=date.fromisoformat(plan.date_to),
+                )
+            except ValueError as exc:
+                raise HTTPException(status_code=422, detail="Planner returned an invalid date range") from exc
+
+        if period is None or (plan.requires_clarification and request.period is None):
             return AssistantAnswer(
                 intent="paid_revenue",
-                answer="Укажите период: дату начала и дату окончания.",
+                answer=plan.clarification_question or "Укажите период: дату начала и дату окончания.",
                 status="clarification_required",
                 warnings=["Для расчёта требуется диапазон дат и согласованное определение выручки."],
             )
-        if request.period.start > request.period.end:
+        if period.start > period.end:
             raise HTTPException(status_code=422, detail="Period start must not be after period end")
         rows = [
             row for row in records
             if row["status"] == "paid"
-            and request.period.start <= date.fromisoformat(row["invoice_date"]) <= request.period.end
+            and period.start <= date.fromisoformat(row["invoice_date"]) <= period.end
         ]
         totals: dict[str, Decimal] = {}
         for row in rows:
@@ -127,4 +171,5 @@ def query_assistant(
         intent="unknown",
         answer="Пока доступны вопросы о неоплаченных счетах и сумме оплаченных счетов. Уточните запрос.",
         status="unsupported",
+        warnings=[plan.reason],
     )
