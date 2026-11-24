@@ -21,6 +21,12 @@ The backend owns authenticated actor and tenant context, authorization decisions
 | AI-09 | Unsupported citations | Evidence IDs must match returned records | Unknown-source and fabricated-ID tests |
 | AI-10 | Overconfident answer | Confidence is not treated as truth; uncertain results escalate | Low-evidence scenarios |
 
+## LLM planner boundary
+
+The optional OpenAI Responses API component returns only a typed intent plan: allowed intent, explicit ISO date boundaries, clarification status and a short reason. It is not given any tool definitions or business records. It cannot access the tenant, invoice fixtures, database, external APIs or write operations.
+
+The API performs authentication/tenant validation before calling the planner. After parsing, the backend validates the intent against the allow-list, validates date boundaries and executes the deterministic skill. A planner error returns a service-unavailable response; it does not silently invent a business answer. The default deterministic planner is used in CI.
+
 ## Tool and skill contract
 
 Each skill declares stable ID/version, purpose and allowed roles, required parameters, permitted data sources, read/write classification, output schema, evidence format, error types, retry policy and maximum data scope.
