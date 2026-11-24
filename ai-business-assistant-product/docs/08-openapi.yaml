@@ -11,6 +11,8 @@ servers:
 paths:
   /v1/assistant/query:
     post:
+      security:
+        - DemoBearer: []
       summary: Ask a question against approved read-only business skills
       operationId: submitAssistantQuery
       requestBody:
@@ -31,6 +33,12 @@ paths:
         '422':
           description: Request validation failed
 components:
+  securitySchemes:
+    DemoBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: demo-token
+      description: Public local fixture tokens only; not a production identity system.
   schemas:
     AssistantQuery:
       type: object
