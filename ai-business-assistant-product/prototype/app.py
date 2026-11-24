@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from typing import Literal
 
@@ -16,19 +16,24 @@ AS_OF = datetime(2026, 11, 24, 12, 0, tzinfo=timezone.utc)
 DEMO_TOKENS = {"demo-alpha-token": "demo-alpha", "demo-beta-token": "demo-beta"}
 INVOICES = {
     "demo-alpha": [
-        {"id": "INV-A-1001", "customer": "Northwind Demo", "due_date": "2026-11-20", "amount": "125000.00", "currency": "RUB", "status": "unpaid"},
-        {"id": "INV-A-1002", "customer": "Contoso Demo", "due_date": "2026-11-28", "amount": "54000.00", "currency": "RUB", "status": "unpaid"},
-        {"id": "INV-A-1003", "customer": "Fabrikam Demo", "due_date": "2026-11-15", "amount": "800.00", "currency": "EUR", "status": "paid"},
-        {"id": "INV-A-1004", "customer": "Adventure Demo", "due_date": "2026-11-22", "amount": "91000.00", "currency": "RUB", "status": "paid"},
+        {"id": "INV-A-1001", "customer": "Northwind Demo", "invoice_date": "2026-11-01", "due_date": "2026-11-20", "amount": "125000.00", "currency": "RUB", "status": "unpaid"},
+        {"id": "INV-A-1002", "customer": "Contoso Demo", "invoice_date": "2026-11-02", "due_date": "2026-11-28", "amount": "54000.00", "currency": "RUB", "status": "unpaid"},
+        {"id": "INV-A-1003", "customer": "Fabrikam Demo", "invoice_date": "2026-11-03", "due_date": "2026-11-15", "amount": "800.00", "currency": "EUR", "status": "paid"},
+        {"id": "INV-A-1004", "customer": "Adventure Demo", "invoice_date": "2026-11-04", "due_date": "2026-11-22", "amount": "91000.00", "currency": "RUB", "status": "paid"},
     ],
     "demo-beta": [
-        {"id": "INV-B-2001", "customer": "Tailspin Demo", "due_date": "2026-11-18", "amount": "34000.00", "currency": "RUB", "status": "unpaid"},
+        {"id": "INV-B-2001", "customer": "Tailspin Demo", "invoice_date": "2026-11-01", "due_date": "2026-11-18", "amount": "34000.00", "currency": "RUB", "status": "unpaid"},
     ],
 }
+
+class QueryPeriod(BaseModel):
+    start: date = Field(alias="from")
+    end: date = Field(alias="to")
 
 class AssistantQuery(BaseModel):
     question: str = Field(min_length=3, max_length=1000)
     tenant_id: Literal["demo-alpha", "demo-beta"]
+    period: QueryPeriod | None = None
 
 class Evidence(BaseModel):
     source: str
@@ -92,14 +97,20 @@ def query_assistant(
         )
 
     if any(term in text for term in ("выруч", "оплачен", "поступлен", "заработ")):
-        if not any(term in text for term in ("за весь", "за период", "с ", "по ", "ноябрь", "2026")):
+        if request.period is None:
             return AssistantAnswer(
                 intent="paid_revenue",
                 answer="Укажите период: дату начала и дату окончания.",
                 status="clarification_required",
-                warnings=["Для полноценного расчёта требуется согласованное определение выручки и диапазон дат."],
+                warnings=["Для расчёта требуется диапазон дат и согласованное определение выручки."],
             )
-        rows = [row for row in records if row["status"] == "paid"]
+        if request.period.start > request.period.end:
+            raise HTTPException(status_code=422, detail="Period start must not be after period end")
+        rows = [
+            row for row in records
+            if row["status"] == "paid"
+            and request.period.start <= date.fromisoformat(row["invoice_date"]) <= request.period.end
+        ]
         totals: dict[str, Decimal] = {}
         for row in rows:
             totals[row["currency"]] = totals.get(row["currency"], Decimal("0")) + Decimal(row["amount"])
