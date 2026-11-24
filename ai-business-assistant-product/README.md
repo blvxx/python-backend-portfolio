@@ -65,6 +65,12 @@ The demo data is synthetic. Tenant IDs are demo identifiers, not real organisati
 5. Run the API and execute the tests.
 6. Compare prototype behavior with the documented release gates.
 
+
+## Latest verification
+
+- [AI Business Assistant Prototype CI — successful run on 24 November 2026](https://github.com/blvxx/python-backend-portfolio/actions/runs/45414339077)
+- The workflow compiles the FastAPI application and runs the API test suite, including tenant isolation, unsupported writes, revenue date filtering and invalid period boundaries.
+
 ## Evidence and limitations
 
 - Requirements and BA artifacts: authored for this independent case study.
