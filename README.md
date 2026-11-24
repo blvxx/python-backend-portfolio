@@ -17,6 +17,16 @@ I build Python-based backend tools and integrations, with a focus on REST APIs, 
 - **Engineering:** Docker, Docker Compose, Git, GitHub Actions, pytest, logging and error handling.
 - **AI-assisted workflows:** retrieval from internal runbooks, structured triage, citation validation and human approval boundaries.
 
+## AI product analysis case
+
+### SME AI Business Assistant — Business Analyst case study
+
+[Open project](./ai-business-assistant-product)
+
+End-to-end product analysis for a fictional SME assistant: business context, BRD/FRD, user stories, acceptance criteria, AS-IS/TO-BE, dialogue scenarios, AI guardrails, requirements traceability, evaluation plan and prioritised backlog. Includes a deterministic FastAPI prototype with synthetic tenant-scoped invoice data.
+
+The prototype demonstrates routing and access boundaries; it does not call an LLM. Model evaluation and production banking integrations are documented as future work, not claimed as completed.
+
 ## Selected projects
 
 The source projects are included in this repository with their code, configuration, tests and engineering documentation. Cross-disciplinary QA/integration examples remain linked from the dedicated QA portfolio.
