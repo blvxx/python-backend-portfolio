@@ -20,7 +20,7 @@ Open http://127.0.0.1:8000/docs.
 ~~~bash
 curl -X POST http://127.0.0.1:8000/v1/assistant/query \
   -H "Content-Type: application/json" \
-  -H "X-Demo-Tenant: demo-alpha" \
+  -H "Authorization: Bearer demo-alpha-token" \
   -d '{"question":"Покажи неоплаченные счета","tenant_id":"demo-alpha"}'
 ~~~
 
@@ -32,4 +32,4 @@ pytest -q
 
 Tests cover supported intents, unknown intent, missing tenant context, mismatched tenant context and evidence metadata.
 
-The tenant header is a demo-only stand-in. Production authentication must derive tenant and actor from a trusted identity provider, not from user-controlled request fields.
+The demo tokens are public fixture values intentionally stored in source code. They only demonstrate server-side token-to-tenant mapping for local tests and provide no real security. Production authentication must validate credentials through a trusted identity provider and derive tenant and actor from verified claims.
