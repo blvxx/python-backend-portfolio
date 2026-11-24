@@ -65,6 +65,14 @@ def query_assistant(
     text = request.question.casefold()
     records = INVOICES[request.tenant_id]
 
+    if any(term in text for term in ("оплати", "переведи", "отметь", "измени статус", "закрой счёт")):
+        return AssistantAnswer(
+            intent="unsupported_write",
+            answer="Эта версия работает только в режиме чтения и не выполняет платежи или изменения счетов.",
+            status="unsupported",
+            warnings=["Write operations are disabled in the MVP."],
+        )
+
     if any(term in text for term in ("неоплачен", "должны оплатить", "дебитор")):
         rows = [row for row in records if row["status"] == "unpaid"]
         if not rows:
@@ -83,7 +91,7 @@ def query_assistant(
             warnings=["Синтетические демонстрационные данные; не использовать для финансовых решений."],
         )
 
-    if any(term in text for term in ("выруч", "оплачен", "поступлен")):
+    if any(term in text for term in ("выруч", "оплачен", "поступлен", "заработ")):
         if not any(term in text for term in ("за весь", "за период", "с ", "по ", "ноябрь", "2026")):
             return AssistantAnswer(
                 intent="paid_revenue",
@@ -102,14 +110,6 @@ def query_assistant(
             status="answered",
             evidence=[Evidence(source="synthetic_invoice_fixture", record_ids=[r["id"] for r in rows], as_of=AS_OF)],
             warnings=["Это сумма оплаченных счетов в demo fixture, не бухгалтерская выручка."],
-        )
-
-    if any(term in text for term in ("оплати", "переведи", "измени статус", "отметь оплачен")):
-        return AssistantAnswer(
-            intent="unsupported_write",
-            answer="Эта версия работает только в режиме чтения и не выполняет платежи или изменения счетов.",
-            status="unsupported",
-            warnings=["Write operations are disabled in the MVP."],
         )
 
     return AssistantAnswer(
