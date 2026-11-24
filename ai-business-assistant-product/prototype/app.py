@@ -12,6 +12,8 @@ app = FastAPI(
 )
 
 AS_OF = datetime(2026, 11, 24, 12, 0, tzinfo=timezone.utc)
+# Public fixture tokens are for local demo only; never use them outside this repository.
+DEMO_TOKENS = {"demo-alpha-token": "demo-alpha", "demo-beta-token": "demo-beta"}
 INVOICES = {
     "demo-alpha": [
         {"id": "INV-A-1001", "customer": "Northwind Demo", "due_date": "2026-11-20", "amount": "125000.00", "currency": "RUB", "status": "unpaid"},
@@ -38,8 +40,8 @@ class AssistantAnswer(BaseModel):
     answer: str
     status: Literal["answered", "clarification_required", "unsupported"]
     read_only: Literal[True] = True
-    evidence: list[Evidence] = []
-    warnings: list[str] = []
+    evidence: list[Evidence] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
 
 @app.get("/health")
 def health():
@@ -48,12 +50,16 @@ def health():
 @app.post("/v1/assistant/query", response_model=AssistantAnswer)
 def query_assistant(
     request: AssistantQuery,
-    x_demo_tenant: str | None = Header(default=None),
+    authorization: str | None = Header(default=None),
 ):
-    # Production tenant context must come from a trusted identity provider.
-    if not x_demo_tenant:
-        raise HTTPException(status_code=403, detail="Authenticated tenant context is required")
-    if x_demo_tenant != request.tenant_id:
+    # The demo token-to-tenant mapping is public fixture data, not real authentication.
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=403, detail="Bearer token is required")
+    token = authorization.removeprefix("Bearer ").strip()
+    authenticated_tenant = DEMO_TOKENS.get(token)
+    if not authenticated_tenant:
+        raise HTTPException(status_code=403, detail="Invalid demo token")
+    if authenticated_tenant != request.tenant_id:
         raise HTTPException(status_code=403, detail="Tenant context mismatch")
 
     text = request.question.casefold()
@@ -78,7 +84,7 @@ def query_assistant(
         )
 
     if any(term in text for term in ("выруч", "оплачен", "поступлен")):
-        if "за какой" in text or "какой период" in text:
+        if not any(term in text for term in ("за весь", "за период", "с ", "по ", "ноябрь", "2026")):
             return AssistantAnswer(
                 intent="paid_revenue",
                 answer="Укажите период: дату начала и дату окончания.",
