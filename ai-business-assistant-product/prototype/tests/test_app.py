@@ -29,7 +29,7 @@ def test_mismatched_tenant_is_denied():
     assert response.status_code == 403
 
 def test_paid_revenue_keeps_currencies_separate():
-    response = client.post("/v1/assistant/query", json=payload("Покажи выручку за весь demo-период"), headers={"Authorization": "Bearer demo-alpha-token"})
+    response = client.post("/v1/assistant/query", json=payload("Покажи выручку за ноябрь", period={"from": "2026-11-01", "to": "2026-11-30"}), headers={"Authorization": "Bearer demo-alpha-token"})
     assert response.status_code == 200
     answer = response.json()["answer"]
     assert "EUR 800.00" in answer
