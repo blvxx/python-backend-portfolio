@@ -22,6 +22,23 @@ app = FastAPI(
 AS_OF = datetime(2026, 11, 24, 12, 0, tzinfo=timezone.utc)
 # Public fixture tokens are for local demo only; never use them outside this repository.
 DEMO_TOKENS = {"demo-alpha-token": "demo-alpha", "demo-beta-token": "demo-beta"}
+
+# Defense in depth: write requests are rejected by the API before the planner runs.
+# Keep this independent from model output so a planner mistake cannot enable mutations.
+_WRITE_INTENT_MARKERS = (
+    "оплати", "оплатить", "выполни оплат", "выполнить оплат", "проведи оплат",
+    "провести оплат", "переведи", "перевести", "перечисли", "сделай перевод",
+    "отметь", "пометь", "измени статус", "изменить статус", "закрой счет",
+    "закрыть счет", "удали", "удалить", "создай счет", "создать счет",
+    "выстави счет", "выставить счет", "отмени", "отменить", "верни деньги",
+    "refund", "pay invoice", "make a payment", "transfer", "mark as paid",
+    "change status", "delete", "remove invoice", "edit invoice", "update invoice",
+    "create invoice", "cancel payment",
+)
+
+def contains_write_intent(question: str) -> bool:
+    normalized = question.casefold().replace("ё", "е")
+    return any(marker in normalized for marker in _WRITE_INTENT_MARKERS)
 INVOICES = {
     "demo-alpha": [
         {"id": "INV-A-1001", "customer": "Northwind Demo", "invoice_date": "2026-11-01", "due_date": "2026-11-20", "amount": "125000.00", "currency": "RUB", "status": "unpaid"},
@@ -93,6 +110,15 @@ async def query_assistant(
         raise HTTPException(status_code=403, detail="Invalid demo token")
     if authenticated_tenant != request.tenant_id:
         raise HTTPException(status_code=403, detail="Tenant context mismatch")
+
+    # Do not rely on an LLM/deterministic planner to enforce the read-only boundary.
+    if contains_write_intent(request.question):
+        return AssistantAnswer(
+            intent="unsupported_write",
+            answer="Эта версия работает только в режиме чтения и не выполняет платежи или изменения счетов.",
+            status="unsupported",
+            warnings=["Write operations are disabled in the MVP."],
+        )
 
     try:
         plan = await get_planner().plan(
