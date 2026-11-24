@@ -132,7 +132,13 @@ async def query_assistant(
 
     if plan.intent == "paid_revenue":
         period = request.period
-        if period is None and plan.date_from and plan.date_to:
+        if (
+            period is None
+            and plan.date_from
+            and plan.date_to
+            and plan.date_from in request.question
+            and plan.date_to in request.question
+        ):
             try:
                 period = QueryPeriod(
                     start=date.fromisoformat(plan.date_from),
