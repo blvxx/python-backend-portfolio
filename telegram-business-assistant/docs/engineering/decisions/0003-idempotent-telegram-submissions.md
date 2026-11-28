@@ -1,6 +1,7 @@
 # ADR-0003: Idempotent Telegram enquiry submissions
 
 - Status: Accepted
+- Scope: SQLite persistence / single-instance profile
 - Date: 2026-11-22
 - Project: Telegram Business Assistant
 
