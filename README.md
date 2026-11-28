@@ -7,7 +7,7 @@
 
 I build Python-based backend tools and integrations, with a focus on REST APIs, asynchronous workflows, data persistence, automation, reliability and testable service behavior.
 
-> **For AI Business Analyst review:** start with the [SME AI Business Assistant — Business Analysis Case Study](./ai-business-assistant-product). It contains the business context, BRD/FRD, AS-IS / TO-BE flows, user stories, acceptance criteria, AI safety policy, requirements traceability, evaluation plan, backlog and API contract. The companion FastAPI demo uses deterministic routing and synthetic invoice data.
+> **Supporting product-analysis case:** the [SME AI Business Assistant — Business Analysis Case Study](./ai-business-assistant-product) contains a complete set of product-analysis artefacts alongside the deterministic FastAPI prototype. It contains the business context, BRD/FRD, AS-IS / TO-BE flows, user stories, acceptance criteria, AI safety policy, requirements traceability, evaluation plan, backlog and API contract. The companion FastAPI demo uses deterministic routing and synthetic invoice data.
 
 **Target roles:** Python Developer · Backend Developer · Junior / Middle Python Engineer · Integration Developer
 
