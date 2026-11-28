@@ -49,7 +49,7 @@ Engineering topics:
 - Transactional outbox pattern for reliable notification workflows.
 - Integration tests and operational checks.
 
-[Successful CI run](https://github.com/blvxx/python-backend-portfolio/actions/workflows/telegram-business-assistant.yml)
+[Successful CI run](https://github.com/blvxx/python-backend-projects/actions/workflows/telegram-business-assistant.yml)
 
 ### 2. AI Support Triage Agent
 
@@ -66,7 +66,7 @@ Engineering topics:
 
 ### 3. FinTech QA Platform — Backend and Integration
 
-[Open source project](https://github.com/blvxx/qa-engineering-portfolio/tree/main/fintech-qa-platform)
+[Open source project](https://github.com/blvxx/qa-engineering-labs/tree/main/fintech-qa-platform)
 
 A fictional Payment/Ledger service environment using FastAPI, PostgreSQL and Docker Compose.
 
@@ -77,15 +77,15 @@ Engineering topics:
 - Database-backed integration checks.
 - Prometheus/Grafana observability and controlled dependency recovery.
 
-[Successful CI run](https://github.com/blvxx/qa-engineering-portfolio/actions/workflows/fintech-qa-platform.yml)
+[Successful CI run](https://github.com/blvxx/qa-engineering-labs/actions/workflows/fintech-qa-platform.yml)
 
 ### 4. Python API Automation
 
-[Open source project](https://github.com/blvxx/qa-engineering-portfolio/tree/main/api-automation)
+[Open source project](https://github.com/blvxx/qa-engineering-labs/tree/main/api-automation)
 
 Reusable Python HTTP client and pytest suite covering REST methods, schemas, negative cases, pagination, timeouts and safe retry behavior.
 
-[Successful CI run — 62 tests](https://github.com/blvxx/qa-engineering-portfolio/actions/workflows/api-automation.yml)
+[Successful CI run — 62 tests](https://github.com/blvxx/qa-engineering-labs/actions/workflows/api-automation.yml)
 
 ## Engineering approach
 
@@ -107,7 +107,7 @@ I focus on small systems that remove repetitive work and improve operational rel
 - API integrations that normalise data between services.
 - Excel/CSV order validation as a potential wholesale automation workflow.
 
-The commercial casebook describes problem statements, solution boundaries and validation metrics: [QA & Commercial Problem-Solving Casebook](https://github.com/blvxx/qa-engineering-portfolio/blob/main/qa-commercial-casebook.md).
+The commercial casebook describes problem statements, solution boundaries and validation metrics: [QA & Commercial Problem-Solving Casebook](https://github.com/blvxx/qa-engineering-labs/blob/main/qa-commercial-casebook.md).
 
 These are independent projects and solution concepts. I do not present them as paid production deployments or claim customer revenue/savings without measured evidence.
 
