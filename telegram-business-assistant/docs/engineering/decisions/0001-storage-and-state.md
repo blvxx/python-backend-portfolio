@@ -1,6 +1,6 @@
 # ADR-0001: Storage and conversation state
 
-- Status: Accepted for the current MVP; production evolution remains conditional
+- Status: Accepted for the local, single-instance profile; notification delivery is specified in ADR-0002
 - Scope: SQLite and local conversation state / single-instance profile
 - Date: 2026-11-22
 - Project: Telegram Business Assistant
@@ -38,7 +38,7 @@ Negative:
 - Data durability depends on the storage volume being persistent and backed up.
 - MemoryStorage loses unfinished conversations on restart.
 - The database schema uses forward-only migrations tracked with SQLite PRAGMA user_version; automated downgrade is intentionally unsupported.
-- There is no transactional outbox for administrator notifications.
+- Administrator notification intent is persisted through the SQLite transactional outbox described in ADR-0002; delivery remains at-least-once.
 - The current hosted storage persistence is unverified.
 
 ## Revisit this decision when
