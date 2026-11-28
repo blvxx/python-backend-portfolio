@@ -1,6 +1,7 @@
 # ADR-0004: PostgreSQL, Redis and webhook runtime for horizontal scaling
 
 - Status: Accepted in source code; host deployment not yet verified
+- Scope: PostgreSQL, Redis and HTTPS webhook / shared multi-replica profile
 - Date: 2026-11-22
 
 ## Context
