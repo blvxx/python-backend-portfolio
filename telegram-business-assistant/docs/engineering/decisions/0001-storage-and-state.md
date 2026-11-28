@@ -1,6 +1,7 @@
 # ADR-0001: Storage and conversation state
 
 - Status: Accepted for the current MVP; production evolution remains conditional
+- Scope: SQLite and local conversation state / single-instance profile
 - Date: 2026-11-22
 - Project: Telegram Business Assistant
 
