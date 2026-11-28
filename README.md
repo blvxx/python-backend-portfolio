@@ -1,11 +1,11 @@
-# Python Backend — Engineering Projects & Evidence
+# Python Backend Projects — FastAPI, Integrations & Automation
 
 > **Portfolio navigation:** the single employer-facing entry point is the [career portfolio](https://blvxx.github.io/portfolio/). This repository is a technical project library for Python, backend APIs, integrations and automation.
 
 
 **Python Developer · Backend Developer · API Integrations · Automation**
 
-I build Python-based backend tools and integrations, with a focus on REST APIs, asynchronous workflows, data persistence, automation, reliability and testable service behavior.
+This repository contains independently developed Python backend tools and integrations, focused on REST APIs, asynchronous workflows, data persistence, automation, reliability and testable service behavior.
 
 > **Supporting product-analysis case:** the [SME AI Business Assistant — Business Analysis Case Study](./ai-business-assistant-product) contains a complete set of product-analysis artefacts alongside the deterministic FastAPI prototype. It contains the business context, BRD/FRD, AS-IS / TO-BE flows, user stories, acceptance criteria, AI safety policy, requirements traceability, evaluation plan, backlog and API contract. The companion FastAPI demo uses deterministic routing and synthetic invoice data.
 
