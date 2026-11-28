@@ -1,4 +1,7 @@
-# Artem Kalinin — Python Backend Portfolio
+# Python Backend — Engineering Projects & Evidence
+
+> **Portfolio navigation:** the single employer-facing entry point is the [career portfolio](https://blvxx.github.io/portfolio/). This repository is a technical project library for Python, backend APIs, integrations and automation.
+
 
 **Python Developer · Backend Developer · API Integrations · Automation**
 
