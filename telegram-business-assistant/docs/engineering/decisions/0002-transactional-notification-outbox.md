@@ -1,6 +1,7 @@
 # ADR-0002: Transactional outbox for administrator notifications
 
 - Status: Accepted
+- Scope: SQLite transactional outbox / single-instance profile
 - Date: 2026-11-22
 - Project: Telegram Business Assistant
 
