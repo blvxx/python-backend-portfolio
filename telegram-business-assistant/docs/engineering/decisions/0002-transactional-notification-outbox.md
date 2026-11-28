@@ -82,7 +82,7 @@ Negative:
 - Delivery remains at-least-once, so duplicate remote notifications are possible in the crash window.
 - A database failure prevents both lead creation and outbox enqueue, which is intentional atomic behaviour.
 - The live hosting environment's persistent-storage guarantee remains unverified.
-- The current schema is created idempotently at startup; a general versioned migration framework remains future work.
+- SQLite schema evolution uses forward-only migrations tracked by `PRAGMA user_version`; automated downgrade is intentionally unsupported.
 
 ## Operational requirements
 
