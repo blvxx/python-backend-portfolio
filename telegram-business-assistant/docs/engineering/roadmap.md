@@ -46,9 +46,9 @@ A deployment is not considered ready for real customer enquiries until it has:
 
 The former Dada Cloud demo was a single long-polling worker. It is retired and is not presented as a live service. The current PostgreSQL/Redis/webhook runtime is validated through CI, including service-backed integration tests and a disposable PostgreSQL backup/restore drill, but it has not been deployed to a public host.
 
-- Source: https://github.com/blvxx/portfolio/tree/main/telegram-business-assistant
+- Source: https://github.com/blvxx/python-backend-projects/tree/main/telegram-business-assistant
 - Operations runbook: ./operations/runbook.md
 - Architecture: ./architecture.md
-- CI workflow: https://github.com/blvxx/portfolio/actions/workflows/telegram-business-assistant.yml
+- CI workflow: https://github.com/blvxx/python-backend-projects/actions/workflows/telegram-business-assistant.yml
 
 CI does not prove host-level persistence, external backup scheduling, alert-notification delivery, Telegram Bot API delivery or production uptime. Those claims remain out of scope until independently verified.
