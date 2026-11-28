@@ -143,7 +143,7 @@ Tests cover lead persistence, application policy, handler/FSM orchestration, out
 
 ## Latest CI evidence
 
-The reviewed **23 November 2026** GitHub Actions run completed successfully. It passed Python linting, unit and PostgreSQL/Redis service-integration tests, a disposable PostgreSQL backup/restore verification, Prometheus scrape/alert validation and Docker image build.
+The **28 November 2026** GitHub Actions run [completed successfully](https://github.com/blvxx/python-backend-projects/actions/runs/46150294824). It passed Python linting, unit and PostgreSQL/Redis service-integration tests, a disposable PostgreSQL backup/restore verification, Prometheus scrape/alert validation and Docker image build.
 
 [Open the successful workflow run](https://github.com/blvxx/python-backend-projects/actions/workflows/telegram-business-assistant.yml).
 
@@ -169,9 +169,7 @@ The reviewed **23 November 2026** GitHub Actions run completed successfully. It 
 The engineering notes distinguish the current implementation from future design proposals:
 
 - [Current-state architecture and target design](./docs/engineering/architecture.md)
-- [ADR-0001: storage and conversation state](./docs/engineering/decisions/0001-storage-and-state.md)
-- [ADR-0002: transactional notification outbox](./docs/engineering/decisions/0002-transactional-notification-outbox.md)
-- [ADR-0003: idempotent Telegram submissions](./docs/engineering/decisions/0003-idempotent-telegram-submissions.md)
+- [Architecture Decision Records — ADR-0001–ADR-0006](./docs/engineering/decisions/README.md)
 - [Security threat model and control gaps](./docs/engineering/security/threat-model.md)
 - [Operations runbook: deploy, backup and restore](./docs/engineering/operations/runbook.md)
 - [Evidence-based engineering roadmap](./docs/engineering/roadmap.md)
